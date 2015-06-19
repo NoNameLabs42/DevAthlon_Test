@@ -1,3 +1,10 @@
 name: DevAthlon_Plugin
 version: 42.42.42
 main: de.NoNameLabs.Main.TestPlugin
+commands:
+  startmusic:
+    description: Starts Playing music
+    usage: /startmusic
+  stopmusic:
+    description: Stops Playing music
+    usage: /stopmusic 
