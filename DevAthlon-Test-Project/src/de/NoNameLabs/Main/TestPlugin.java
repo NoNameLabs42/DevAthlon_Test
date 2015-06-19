@@ -12,7 +12,6 @@ public class TestPlugin extends JavaPlugin {
         log.info("Plugin gestartet");
         
         //getServer().getPluginManager().registerEvents(new Listener(), this);
-        //HIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
     }
      
     public void onDisable(){ 
