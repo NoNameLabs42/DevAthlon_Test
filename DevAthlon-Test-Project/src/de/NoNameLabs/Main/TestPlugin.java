@@ -17,7 +17,20 @@ public class TestPlugin extends JavaPlugin {
 	
 	List<Player> player_music = new ArrayList<Player>();
 	
-	
+	Note[][] music = {
+		{Note.D},		{Note.F},		{Note.D2},		{}, 	{},		{},		{Note.D},		{Note.F},
+		{Note.D2},		{},		{},		{},		{Note.E2},		{},		{},		{Note.F2},
+		{Note.E2},		{Note.F2},		{Note.E2},		{Note.C2}, 	{Note.A2},		{},		{},		{},
+		{Note.A2},		{},		{Note.D},		{},		{Note.F},		{Note.G2},		{Note.A2},		{},
+		{},		{},		{},		{}, 	{Note.A2},		{},		{Note.D},		{},
+		{Note.F},		{Note.G2},		{Note.E},		{}, 	{},		{},		{},		{},
+		{Note.D},		{Note.F},		{Note.D2},		{}, 	{},		{},		{Note.D},		{Note.F},
+		{Note.D2},		{},		{},		{},		{Note.E2},		{},		{},		{Note.F2},
+		{Note.E2},		{Note.F2},		{Note.E2},		{Note.C2}, 	{Note.A2},		{},		{},		{},
+		{Note.A2},		{},		{Note.D},		{},		{Note.F},		{Note.G2},		{Note.A2},		{},
+		{},		{},		{Note.A2},		{}, 	{Note.D},		{},		{},		{},
+		{},		{},	{},		{},	{},		{},	{},		{},	
+	};
 	
     public void onEnable(){ 
         log.info("Plugin gestartet");
@@ -71,13 +84,15 @@ public class TestPlugin extends JavaPlugin {
     	this.getServer().getScheduler().runTaskTimerAsynchronously(this, new Runnable() {
     		int counter = 0;
     		public void run() {
-    			counter = (counter + 1)%10;
+    			counter = (counter + 1) % music.length;
     			synchronized(player_music) {
     				for (Player p: player_music) {
-    					p.playSound(p.getLocation(), Sound.NOTE_PIANO, 1, 0);
+    					for (Note n: music[counter]) {
+    						p.playSound(p.getLocation(), Sound.NOTE_PIANO, 1, n.getPitch());
+    					}
     				}
     			}
     		}
-    	}, 0L, 20L);
+    	}, 0L, 5L);
     }
 }

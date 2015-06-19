@@ -7,7 +7,7 @@ public enum Note {
 	
 	private float pitch;
 	
-	Notes(float pitch)  {
+	Note(float pitch)  {
 		this.pitch = pitch;
 	}
 	
