@@ -11,20 +11,26 @@ import org.bukkit.Effect;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.util.Vector;
 
 public class TestPlugin extends JavaPlugin {
 	
 	public static TestPlugin INSTANCE;
 	
-	Logger log = this.getLogger();
+	public FileConfiguration config = getConfig();
 	
-	List<Player> player_music = new ArrayList<Player>();
-	Map<Player, Effect> player_effects = new HashMap<Player, Effect>();
+	public Logger log = this.getLogger();
 	
-	Note[][] music = {
+	public List<Player> player_music = new ArrayList<Player>();
+	public Map<Player, Effect> player_effects = new HashMap<Player, Effect>();
+	
+	private int particle_speed, particles, particle_size;
+	
+	
+	
+	public static Note[][] music = {
 		{Note.D},		{Note.F},		{Note.D2},		{}, 	{},		{},		{Note.D},		{Note.F},
 		{Note.D2},		{},		{},		{},		{Note.E2},		{},		{},		{Note.F2},
 		{Note.E2},		{Note.F2},		{Note.E2},		{Note.C2}, 	{Note.A2},		{},		{},		{},
@@ -43,14 +49,29 @@ public class TestPlugin extends JavaPlugin {
     	INSTANCE = this;
         log.info("Plugin gestartet");
         
+        
         getServer().getPluginManager().registerEvents(new TestListener(), this);
         
         music();
         effects();
+        config();
     }
      
     public void onDisable(){ 
     	log.info("Plugin gestoppt");
+    }
+    
+    public void config() { 
+        config.addDefault("Partikel_Geschwindigkeit", 5);
+        config.addDefault("Partikel_Menge", 5);
+        config.addDefault("Partikel_Größe", 1);
+        config.options().copyDefaults(true);
+        
+        particle_speed = config.getInt("Partikel_Geschwindigkeit");
+        particles = config.getInt("Partikel_Menge");
+        particle_size = config.getInt("Partikel_Größe");
+        
+        saveConfig();
     }
     
     public boolean onCommand(CommandSender sender, Command command, String commandlabel, String[] args) {
@@ -110,7 +131,7 @@ public class TestPlugin extends JavaPlugin {
     		public void run() {
     			synchronized (player_effects) {
     				for (Player p: player_effects.keySet()) {
-        				p.getWorld().spigot().playEffect(p.getLocation(), player_effects.get(p), 0, 0, (float) (Math.random() / 4), 1, (float) (Math.random() / 4), 0.2f, 5, 1);
+        				p.getWorld().spigot().playEffect(p.getLocation(), player_effects.get(p), 0, 0, (float) (Math.random() / 4), 1, (float) (Math.random() / 4), 1f / particle_speed, particles, particle_size);
         			}
     			}
     		}
